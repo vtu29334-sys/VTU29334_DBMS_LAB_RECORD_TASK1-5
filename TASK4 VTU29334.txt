@@ -1,0 +1,1087 @@
+SQL*Plus: Release 11.2.0.2.0 Production on Sun Sep 7 17:00:48 2025
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> desc booking;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOKING_ID                                NOT NULL VARCHAR2(20)
+ ROOT_ID                                            VARCHAR2(30)
+ TICKET                                             VARCHAR2(30)
+ STATION_ID                                         VARCHAR2(10)
+ PAYMENT_ID                                         VARCHAR2(30)
+
+SQL> desc match;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MATCH_ID                                  NOT NULL VARCHAR2(30)
+ LOCATION                                           VARCHAR2(30)
+ UMPIREID                                           VARCHAR2(10)
+
+SQL> desc player;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PLAYER_ID                                 NOT NULL VARCHAR2(20)
+ PLAYERNAME                                         VARCHAR2(50)
+ BATTING                                            VARCHAR2(20)
+ BOWLING                                            VARCHAR2(25)
+
+SQL> desc cricketboard;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOARD_ID                                  NOT NULL VARCHAR2(30)
+ BOARDNAME                                          VARCHAR2(35)
+ BOARDADDRESS                                       VARCHAR2(50)
+ CONTACT_NO                                         NUMBER
+
+SQL> desc umpire;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ UMPIRE_ID                                 NOT NULL VARCHAR2(10)
+ UMPIRENAME                                         VARCHAR2(30)
+
+SQL> create table playermatch(player_id VARCHAR2(20),Match_id VARCHAR2(20),PRIMARY KEY(player_id,Match_id),FOREIGN KEY (player_id) REFERENCES player(player_id),FOREIGN KEY(Match_id) REFERENCES Match(Match_id));
+
+Table created.
+
+SQL> desc playermatch;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PLAYER_ID                                 NOT NULL VARCHAR2(20)
+ MATCH_ID                                  NOT NULL VARCHAR2(20)
+
+SQL> select * from booking;
+
+BOOKING_ID           ROOT_ID
+-------------------- ------------------------------
+TICKET                         STATION_ID PAYMENT_ID
+------------------------------ ---------- ------------------------------
+B101                 R001
+TCKT01                         ST001      P001
+
+B102                 R002
+TCKT02                         ST002      P002
+
+B103                 R003
+TCKT03                         ST003      P003
+
+
+SQL> select * from match;
+
+MATCH_ID                       LOCATION                       UMPIREID
+------------------------------ ------------------------------ ----------
+M101                           CHENNAI                        U001
+M102                           HYDERABAD                      U002
+M103                           KURNOOL                        U003
+
+SQL> select * from player;
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING
+-------------------- -------------------------
+P101                 suresh
+left                 right
+
+P102                 pavan
+right                left
+
+P103                 seetha
+left                 left
+
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING
+-------------------- -------------------------
+P104                 lakshmi
+right                right
+
+
+SQL> select * from cricketboard;
+
+BOARD_ID                       BOARDNAME
+------------------------------ -----------------------------------
+BOARDADDRESS                                       CONTACT_NO
+-------------------------------------------------- ----------
+B001                           champions
+nandyal                                            9392404809
+
+B002                           titans
+atmakur                                            9390896246
+
+B003                           champion
+velgode                                            7036799809
+
+
+SQL> select * from umpire;
+
+UMPIRE_ID  UMPIRENAME
+---------- ------------------------------
+U001       chaithu
+U002       lucky
+U003       unlucky
+
+SQL> insert into playermatch values('&player_id','&match_id');
+Enter value for player_id: P101
+Enter value for match_id: M101
+old   1: insert into playermatch values('&player_id','&match_id')
+new   1: insert into playermatch values('P101','M101')
+
+1 row created.
+
+SQL> /
+Enter value for player_id: P102
+Enter value for match_id: M102
+old   1: insert into playermatch values('&player_id','&match_id')
+new   1: insert into playermatch values('P102','M102')
+
+1 row created.
+
+SQL> /
+Enter value for player_id: P103
+Enter value for match_id: M103
+old   1: insert into playermatch values('&player_id','&match_id')
+new   1: insert into playermatch values('P103','M103')
+
+1 row created.
+
+SQL> select * from playermatch;
+
+PLAYER_ID            MATCH_ID
+-------------------- --------------------
+P101                 M101
+P102                 M102
+P103                 M103
+
+SQL> select location from match WHERE Match_id = 'M101';
+
+LOCATION
+------------------------------
+CHENNAI
+
+SQL> select player from booking WHERE playername like 'l%';
+select player from booking WHERE playername like 'l%'
+                                 *
+ERROR at line 1:
+ORA-00904: "PLAYERNAME": invalid identifier
+
+
+SQL> select player from booking WHERE name like 'l%';
+select player from booking WHERE name like 'l%'
+                                 *
+ERROR at line 1:
+ORA-00904: "NAME": invalid identifier
+
+
+SQL> select playername from player WHERE name like 'l%';
+select playername from player WHERE name like 'l%'
+                                    *
+ERROR at line 1:
+ORA-00904: "NAME": invalid identifier
+
+
+SQL> select player from player WHERE playername like 'l%';
+select player from player WHERE playername like 'l%'
+       *
+ERROR at line 1:
+ORA-00904: "PLAYER": invalid identifier
+
+
+SQL> Alter table player ADD (batting VARCHAR2(20),bowling VARCHAR2(20));
+Alter table player ADD (batting VARCHAR2(20),bowling VARCHAR2(20))
+                        *
+ERROR at line 1:
+ORA-01430: column being added already exists in table
+
+
+SQL> select * from player;
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING
+-------------------- -------------------------
+P101                 suresh
+left                 right
+
+P102                 pavan
+right                left
+
+P103                 seetha
+left                 left
+
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING
+-------------------- -------------------------
+P104                 lakshmi
+right                right
+
+
+SQL> select COUNT(*) from player WHERE batting='Right';
+
+  COUNT(*)
+----------
+         0
+
+SQL> select COUNT(*) from player WHERE batting='left';
+
+  COUNT(*)
+----------
+         2
+
+SQL> select * from cricketboard WHERE board_id IN ('B001','B002','B003');
+
+BOARD_ID                       BOARDNAME
+------------------------------ -----------------------------------
+BOARDADDRESS                                       CONTACT_NO
+-------------------------------------------------- ----------
+B001                           champions
+nandyal                                            9392404809
+
+B002                           titans
+atmakur                                            9390896246
+
+B003                           champion
+velgode                                            7036799809
+
+
+SQL> select player_id,playername from player WHERE bowling='left';
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+P102                 pavan
+P103                 seetha
+
+SQL> select player_id,playername from player WHERE batting='right';
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+P102                 pavan
+P104                 lakshmi
+
+SQL> select player_id,playername from player WHERE batting='left';
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+P101                 suresh
+P103                 seetha
+
+SQL> select umpire_id from umpire where umpire_id NOT IN (select DISTINCT umpire_id from match);
+
+no rows selected
+
+SQL> select player_id,COUNT (match_id) AS total matches from playermatch group by player_id;
+select player_id,COUNT (match_id) AS total matches from playermatch group by player_id
+                                           *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select playername from player WHERE playername like 'l%';
+
+PLAYERNAME
+--------------------------------------------------
+lakshmi
+
+SQL> select location from match WHERE match_id ='M102';
+
+LOCATION
+------------------------------
+HYDERABAD
+
+SQL> select playername from player WHERE playername like '%h';
+
+PLAYERNAME
+--------------------------------------------------
+suresh
+
+SQL> select playername from player WHERE playername like '%r';
+
+no rows selected
+
+SQL> select playername from player WHERE playername like 'suresh';
+
+PLAYERNAME
+--------------------------------------------------
+suresh
+
+SQL> select playername from player WHERE playername like 'pavan';
+
+PLAYERNAME
+--------------------------------------------------
+pavan
+
+SQL> select * from cricketboard;
+
+BOARD_ID                       BOARDNAME
+------------------------------ -----------------------------------
+BOARDADDRESS                                       CONTACT_NO
+-------------------------------------------------- ----------
+B001                           champions
+nandyal                                            9392404809
+
+B002                           titans
+atmakur                                            9390896246
+
+B003                           champion
+velgode                                            7036799809
+
+
+
+SQL> disconnect
+Disconnected from Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+SQL> connect
+Enter user-name: VTU28660
+Enter password:
+Connected.
+SQL> select * from cricketboard;
+select * from cricketboard
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> select * from cricketboard;
+
+BOARD_ID                       BOARDNAME
+------------------------------ -----------------------------------
+BOARDADDRESS                                       CONTACT_NO
+-------------------------------------------------- ----------
+B001                           champions
+nandyal                                            9392404809
+
+B002                           titans
+atmakur                                            9390896246
+
+B003                           champion
+velgode                                            7036799809
+
+
+SQL> desc cricketboard;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOARD_ID                                  NOT NULL VARCHAR2(30)
+ BOARDNAME                                          VARCHAR2(35)
+ BOARDADDRESS                                       VARCHAR2(50)
+ CONTACT_NO                                         NUMBER
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> create table team(team_id VARCHAR2(20) PRIMARY KEY,teamname VARCHAR2(25),result VARCHAR2(10));
+
+Table created.
+
+SQL> desc team;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ TEAM_ID                                   NOT NULL VARCHAR2(20)
+ TEAMNAME                                           VARCHAR2(25)
+ RESULT                                             VARCHAR2(10)
+
+SQL> drop table team;
+
+Table dropped.
+
+SQL> create table team(team_id VARCHAR2(20) PRIMARY KEY,teamname VARCHAR2(25),result VARCHAR2(10));
+
+Table created.
+
+SQL> desc team;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ TEAM_ID                                   NOT NULL VARCHAR2(20)
+ TEAMNAME                                           VARCHAR2(25)
+ RESULT                                             VARCHAR2(10)
+
+SQL> drop table team;
+
+Table dropped.
+
+SQL> create table team(team_id VARCHAR2(20) PRIMARY KEY,teamname VARCHAR2(25),result VARCHAR2(10),winningmatches VARCHAR2(25));
+
+Table created.
+
+SQL> desc team;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ TEAM_ID                                   NOT NULL VARCHAR2(20)
+ TEAMNAME                                           VARCHAR2(25)
+ RESULT                                             VARCHAR2(10)
+ WINNINGMATCHES                                     VARCHAR2(25)
+
+SQL> insert into team values('&team_id','&teamname','&result','&winningmatches');
+Enter value for team_id: T101
+Enter value for teamname: titans
+Enter value for result: win
+Enter value for winningmatches: 2
+old   1: insert into team values('&team_id','&teamname','&result','&winningmatches')
+new   1: insert into team values('T101','titans','win','2')
+
+1 row created.
+
+SQL> /
+Enter value for team_id: T102
+Enter value for teamname: safrons
+Enter value for result: win
+Enter value for winningmatches: 3
+old   1: insert into team values('&team_id','&teamname','&result','&winningmatches')
+new   1: insert into team values('T102','safrons','win','3')
+
+1 row created.
+
+SQL> /
+Enter value for team_id: T103
+Enter value for teamname: koreans
+Enter value for result: looser
+Enter value for winningmatches: 0
+old   1: insert into team values('&team_id','&teamname','&result','&winningmatches')
+new   1: insert into team values('T103','koreans','looser','0')
+
+1 row created.
+
+SQL> /
+Enter value for team_id: T104
+Enter value for teamname: westindies
+Enter value for result: win
+Enter value for winningmatches: 2
+old   1: insert into team values('&team_id','&teamname','&result','&winningmatches')
+new   1: insert into team values('T104','westindies','win','2')
+
+1 row created.
+
+SQL> select * from team;
+
+TEAM_ID              TEAMNAME                  RESULT
+-------------------- ------------------------- ----------
+WINNINGMATCHES
+-------------------------
+T101                 titans                    win
+2
+
+T102                 safrons                   win
+3
+
+T103                 koreans                   looser
+0
+
+
+TEAM_ID              TEAMNAME                  RESULT
+-------------------- ------------------------- ----------
+WINNINGMATCHES
+-------------------------
+T104                 westindies                win
+2
+
+
+SQL> drop table umpire;
+
+Table dropped.
+
+SQL> create table umpire(umpire_id VARCHAR2(20) PRIMARY KEY,umpirename VARCHAR2(25),age int);
+
+Table created.
+
+SQL> desc umpire;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ UMPIRE_ID                                 NOT NULL VARCHAR2(20)
+ UMPIRENAME                                         VARCHAR2(25)
+ AGE                                                NUMBER(38)
+
+SQL> insert into umpire values('&umpire_id','&umpirename','&age');
+Enter value for umpire_id: U001
+Enter value for umpirename: radha
+Enter value for age: 25
+old   1: insert into umpire values('&umpire_id','&umpirename','&age')
+new   1: insert into umpire values('U001','radha','25')
+
+1 row created.
+
+SQL> /
+Enter value for umpire_id: U002
+Enter value for umpirename: krishna
+Enter value for age: 35
+old   1: insert into umpire values('&umpire_id','&umpirename','&age')
+new   1: insert into umpire values('U002','krishna','35')
+
+1 row created.
+
+SQL> /
+Enter value for umpire_id: U003
+Enter value for umpirename: kumara
+Enter value for age: 21
+old   1: insert into umpire values('&umpire_id','&umpirename','&age')
+new   1: insert into umpire values('U003','kumara','21')
+
+1 row created.
+
+SQL> /
+Enter value for umpire_id: U004
+Enter value for umpirename: pavan
+Enter value for age: 27
+old   1: insert into umpire values('&umpire_id','&umpirename','&age')
+new   1: insert into umpire values('U004','pavan','27')
+
+1 row created.
+
+SQL> select * from umpire;
+
+UMPIRE_ID            UMPIRENAME                       AGE
+-------------------- ------------------------- ----------
+U001                 radha                             25
+U002                 krishna                           35
+U003                 kumara                            21
+U004                 pavan                             27
+
+SQL> insert into team values('&team_id','&teamname','&result','&winningmatches');
+Enter value for team_id: T105
+Enter value for teamname: radhas
+Enter value for result: tie
+Enter value for winningmatches: 2
+old   1: insert into team values('&team_id','&teamname','&result','&winningmatches')
+new   1: insert into team values('T105','radhas','tie','2')
+
+1 row created.
+
+SQL> select * from team;
+
+TEAM_ID              TEAMNAME                  RESULT
+-------------------- ------------------------- ----------
+WINNINGMATCHES
+-------------------------
+T101                 titans                    win
+2
+
+T102                 safrons                   win
+3
+
+T103                 koreans                   looser
+0
+
+
+TEAM_ID              TEAMNAME                  RESULT
+-------------------- ------------------------- ----------
+WINNINGMATCHES
+-------------------------
+T104                 westindies                win
+2
+
+T105                 radhas                    tie
+2
+
+
+SQL> select team_id,count(winningmatches) from team;
+select team_id,count(winningmatches) from team
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select count(winningmatches) from team;
+
+COUNT(WINNINGMATCHES)
+---------------------
+                    5
+
+SQL> select count(*) from team WHERE winningmatches='win';
+
+  COUNT(*)
+----------
+         0
+
+SQL> select count(*) from team WHERE result='win';
+
+  COUNT(*)
+----------
+         3
+
+SQL> desc player;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PLAYER_ID                                 NOT NULL VARCHAR2(20)
+ PLAYERNAME                                         VARCHAR2(50)
+ BATTING                                            VARCHAR2(20)
+ BOWLING                                            VARCHAR2(25)
+
+SQL> select count(*) from team WHERE result = 'win';
+
+  COUNT(*)
+----------
+         3
+
+SQL> select count(*) from team WHERE result = 'tie';
+
+  COUNT(*)
+----------
+         1
+
+SQL> drop table player;
+drop table player
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys
+
+
+SQL>  drop table player ;
+ drop table player
+            *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys
+
+
+SQL> select count(age) from team CHECK age < 30;
+select count(age) from team CHECK age < 30
+                            *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select count(age) from team CHECK age < 30 ;
+select count(age) from team CHECK age < 30
+                            *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select count(age) from team WHERE age < 30 ;
+select count(age) from team WHERE age < 30
+                                  *
+ERROR at line 1:
+ORA-00904: "AGE": invalid identifier
+
+
+SQL> select count(*) from team CHECK age < 30 ;
+select count(*) from team CHECK age < 30
+                          *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select count(age) from team WHERE age<30;
+select count(age) from team WHERE age<30
+                                  *
+ERROR at line 1:
+ORA-00904: "AGE": invalid identifier
+
+
+SQL> select count(age) from umpire WHERE age < 30 ;
+
+COUNT(AGE)
+----------
+         3
+
+SQL> select count(age) from umpire CHECK age < 30 ;
+select count(age) from umpire CHECK age < 30
+                              *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select count(*) from umpire CHECK age < 30 ;
+select count(*) from umpire CHECK age < 30
+                            *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select count(age) from umpire WHERE age < 30 ;
+
+COUNT(AGE)
+----------
+         3
+
+SQL> select * from player;
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING
+-------------------- -------------------------
+P101                 suresh
+left                 right
+
+P102                 pavan
+right                left
+
+P103                 seetha
+left                 left
+
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING
+-------------------- -------------------------
+P104                 lakshmi
+right                right
+
+
+SQL> alter table player ADD(age int,matches);
+alter table player ADD(age int,matches)
+                               *
+ERROR at line 1:
+ORA-02263: need to specify the datatype for this column
+
+
+SQL> alter table player ADD(age int,matches VARCHAR2(30));
+
+Table altered.
+
+SQL> desc player;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PLAYER_ID                                 NOT NULL VARCHAR2(20)
+ PLAYERNAME                                         VARCHAR2(50)
+ BATTING                                            VARCHAR2(20)
+ BOWLING                                            VARCHAR2(25)
+ AGE                                                NUMBER(38)
+ MATCHES                                            VARCHAR2(30)
+
+SQL> select * from match;
+
+MATCH_ID                       LOCATION                       UMPIREID
+------------------------------ ------------------------------ ----------
+M101                           CHENNAI                        U001
+M102                           HYDERABAD                      U002
+M103                           KURNOOL                        U003
+
+SQL> insert into player('&age','&matches');
+Enter value for age: 25
+Enter value for matches: T20
+old   1: insert into player('&age','&matches')
+new   1: insert into player('25','T20')
+insert into player('25','T20')
+                   *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> insert values into player('&age','&matches');
+Enter value for age: 21
+Enter value for matches: T20
+old   1: insert values into player('&age','&matches')
+new   1: insert values into player('21','T20')
+insert values into player('21','T20')
+       *
+ERROR at line 1:
+ORA-00925: missing INTO keyword
+
+
+SQL> insert  into player values('&age','&matches');
+Enter value for age: 21
+Enter value for matches: T20
+old   1: insert  into player values('&age','&matches')
+new   1: insert  into player values('21','T20')
+insert  into player values('21','T20')
+             *
+ERROR at line 1:
+ORA-00947: not enough values
+
+
+SQL> insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches');
+Enter value for player_id: P101
+Enter value for playername: suresh
+Enter value for batting: right
+Enter value for bowling: left
+Enter value for age: 21
+Enter value for matches: T20
+old   1: insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches')
+new   1: insert  into player values('P101','suresh','right','left','21','T20')
+insert  into player values('P101','suresh','right','left','21','T20')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007005) violated
+
+
+SQL> insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches');
+Enter value for player_id: P101
+Enter value for playername: suresh
+Enter value for batting: right
+Enter value for bowling: left
+Enter value for age: 23
+Enter value for matches: 3
+old   1: insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches')
+new   1: insert  into player values('P101','suresh','right','left','23','3')
+insert  into player values('P101','suresh','right','left','23','3')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007005) violated
+
+
+SQL> select * from player;
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING                          AGE
+-------------------- ------------------------- ----------
+MATCHES
+------------------------------
+P101                 suresh
+left                 right
+
+
+P102                 pavan
+right                left
+
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING                          AGE
+-------------------- ------------------------- ----------
+MATCHES
+------------------------------
+
+P103                 seetha
+left                 left
+
+
+P104                 lakshmi
+right                right
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING                          AGE
+-------------------- ------------------------- ----------
+MATCHES
+------------------------------
+
+
+
+SQL> insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches');
+Enter value for player_id: P101
+Enter value for playername: suresh
+Enter value for batting: left
+Enter value for bowling: right
+Enter value for age: 21
+Enter value for matches: T20
+old   1: insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches')
+new   1: insert  into player values('P101','suresh','left','right','21','T20')
+insert  into player values('P101','suresh','left','right','21','T20')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007005) violated
+
+
+SQL> insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches');
+Enter value for player_id: p101
+Enter value for playername: surya
+Enter value for batting: left
+Enter value for bowling: right
+Enter value for age: 23
+Enter value for matches: T20
+old   1: insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches')
+new   1: insert  into player values('p101','surya','left','right','23','T20')
+
+1 row created.
+
+SQL> /
+Enter value for player_id: p102
+Enter value for playername: pavan
+Enter value for batting: right
+Enter value for bowling: left
+Enter value for age: 21
+Enter value for matches: T20
+old   1: insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches')
+new   1: insert  into player values('p102','pavan','right','left','21','T20')
+
+1 row created.
+
+SQL> /
+Enter value for player_id: p103
+Enter value for playername: pavani
+Enter value for batting: left
+Enter value for bowling: right
+Enter value for age: 30
+Enter value for matches: T21
+old   1: insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches')
+new   1: insert  into player values('p103','pavani','left','right','30','T21')
+
+1 row created.
+
+SQL> /
+Enter value for player_id: p104
+Enter value for playername: srija
+Enter value for batting: left
+Enter value for bowling: right
+Enter value for age: 40
+Enter value for matches: T20
+old   1: insert  into player values('&player_id','&playername','&batting','&bowling','&age','&matches')
+new   1: insert  into player values('p104','srija','left','right','40','T20')
+
+1 row created.
+
+SQL> select * from player;
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING                          AGE
+-------------------- ------------------------- ----------
+MATCHES
+------------------------------
+P101                 suresh
+left                 right
+
+
+P102                 pavan
+right                left
+
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING                          AGE
+-------------------- ------------------------- ----------
+MATCHES
+------------------------------
+
+P103                 seetha
+left                 left
+
+
+P104                 lakshmi
+right                right
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING                          AGE
+-------------------- ------------------------- ----------
+MATCHES
+------------------------------
+
+
+p101                 surya
+left                 right                             23
+T20
+
+p102                 pavan
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING                          AGE
+-------------------- ------------------------- ----------
+MATCHES
+------------------------------
+right                left                              21
+T20
+
+p103                 pavani
+left                 right                             30
+T21
+
+
+PLAYER_ID            PLAYERNAME
+-------------------- --------------------------------------------------
+BATTING              BOWLING                          AGE
+-------------------- ------------------------- ----------
+MATCHES
+------------------------------
+p104                 srija
+left                 right                             40
+T20
+
+
+8 rows selected.
+
+SQL> select player_id ,playename from player WHERE matches='T20';
+select player_id ,playename from player WHERE matches='T20'
+                  *
+ERROR at line 1:
+ORA-00904: "PLAYENAME": invalid identifier
+
+
+SQL> select player_id from player WHERE matches='T20';
+
+PLAYER_ID
+--------------------
+p101
+p102
+p104
+
+SQL> select * from match;
+
+MATCH_ID                       LOCATION                       UMPIREID
+------------------------------ ------------------------------ ----------
+M101                           CHENNAI                        U001
+M102                           HYDERABAD                      U002
+M103                           KURNOOL                        U003
+
+SQL> select count(*) from player WHARE age<30;
+select count(*) from player WHARE age<30
+                                  *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select count(*) from player WHERE age<30;
+
+  COUNT(*)
+----------
+         2
+
+SQL> commit;
+
+Commit complete.
+
+SQL> -- Count total Tie matches for each team
+SQL> SELECT Team, COUNT(*) AS TotalTieMatches
+  2  FROM (
+  3      SELECT Team1 AS Team
+  4      FROM Match
+  5      WHERE Result = 'Tie'
+  6      UNION ALL
+  7      SELECT Team2 AS Team
+  8      FROM Match
+  9      WHERE Result = 'Tie'
+ 10  ) t
+ 11  GROUP BY Team;
+    WHERE Result = 'Tie'
+          *
+ERROR at line 5:
+ORA-00904: "RESULT": invalid identifier
+
+
+SQL> select team,count(*) AS totalmatches from team WHERE result='tie';
+select team,count(*) AS totalmatches from team WHERE result='tie'
+       *
+ERROR at line 1:
+ORA-00904: "TEAM": invalid identifier
+
+
+SQL> select team_id,count(*) AS totalmatches from team WHERE result='tie';
+select team_id,count(*) AS totalmatches from team WHERE result='tie'
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select team_id,count(*)  from team WHERE result='tie';
+select team_id,count(*)  from team WHERE result='tie'
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select teamname,count(*)  from team WHERE result='tie';
+select teamname,count(*)  from team WHERE result='tie'
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select count(*)  from team WHERE result='tie';
+
+  COUNT(*)
+----------
+         1
+
+SQL>

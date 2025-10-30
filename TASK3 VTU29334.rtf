@@ -1,0 +1,463 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 Connected.\par
+SQL> select*from cricketboard\par
+  2\par
+SQL> select*from cricketboard;\par
+\par
+BOARDID    NAME                           ADDRESS\par
+---------- ------------------------------ ------------------------------\par
+   CONTACT\par
+----------\par
+bid101     chennaic.b                     chennai\par
+9959153797\par
+\par
+bid102     andhrac.b                      andhra\par
+9490880438\par
+\par
+bid103     tamilnaduc.b                   tamilnadu\par
+8074183293\par
+\par
+\par
+BOARDID    NAME                           ADDRESS\par
+---------- ------------------------------ ------------------------------\par
+   CONTACT\par
+----------\par
+bid104     delhic.b                       delhi\par
+9959143268\par
+\par
+\par
+SQL> select*from team;\par
+\par
+TEAMID BOARDID    NAME                           COACH\par
+------ ---------- ------------------------------ ------------------------------\par
+CAPTAIN\par
+------------------------------\par
+t1     bid101     green                          bhavya\par
+sri\par
+\par
+t2     bid102     black                          vasu\par
+satya\par
+\par
+t3     bid103     pooja                          madhu\par
+gopi\par
+\par
+\par
+TEAMID BOARDID    NAME                           COACH\par
+------ ---------- ------------------------------ ------------------------------\par
+CAPTAIN\par
+------------------------------\par
+t4     bid104     yellow                         dhana\par
+kavya\par
+\par
+\par
+SQL> select*from player;\par
+\par
+PLAYE FNAME                       AGE\par
+----- -------------------- ----------\par
+p1    ajay                         23\par
+p2    ram                          25\par
+p4    satya                        25\par
+p3    tarun                        23\par
+\par
+SQL> create table match(matchid varchar(10),teamid varchar(20),playerid varchar(6),matchdate DATE);\par
+\par
+Table created.\par
+\par
+SQL> insert into match values('&matchid','&teamid','&playerid','&matchdate');\par
+Enter value for matchid: m1\par
+Enter value for teamid: t1\par
+Enter value for playerid: p1\par
+Enter value for matchdate: 06/05/2007\par
+old   1: insert into match values('&matchid','&teamid','&playerid','&matchdate')\par
+new   1: insert into match values('m1','t1','p1','06/05/2007')\par
+insert into match values('m1','t1','p1','06/05/2007')\par
+                                        *\par
+ERROR at line 1:\par
+ORA-01843: not a valid month\par
+\par
+\par
+SQL> drop table match;\par
+\par
+Table dropped.\par
+\par
+SQL> create table match(matchid varchar(10),teamid varchar(20),playerid varchar(6),match_date DATE);\par
+\par
+Table created.\par
+\par
+SQL> insert into match values('&matchid','&teamid','&playerid','&match_date');\par
+Enter value for matchid: M1\par
+Enter value for teamid: T1\par
+Enter value for playerid: P1\par
+Enter value for match_date: 06_07_2006\par
+old   1: insert into match values('&matchid','&teamid','&playerid','&match_date')\par
+new   1: insert into match values('M1','T1','P1','06_07_2006')\par
+insert into match values('M1','T1','P1','06_07_2006')\par
+                                        *\par
+ERROR at line 1:\par
+ORA-01843: not a valid month\par
+\par
+\par
+SQL> DROP TABLE MATCH;\par
+\par
+Table dropped.\par
+\par
+SQL> create table match(matchid varchar(10),teamid varchar(20),playerid varchar(6));\par
+\par
+Table created.\par
+\par
+SQL> insert into match values('&matchid','&teamid','&playerid');\par
+Enter value for matchid: M1\par
+Enter value for teamid: T1\par
+Enter value for playerid: P1\par
+old   1: insert into match values('&matchid','&teamid','&playerid')\par
+new   1: insert into match values('M1','T1','P1')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for matchid: M2\par
+Enter value for teamid: T2\par
+Enter value for playerid: P2\par
+old   1: insert into match values('&matchid','&teamid','&playerid')\par
+new   1: insert into match values('M2','T2','P2')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for matchid: M3\par
+Enter value for teamid: T3\par
+Enter value for playerid: P3\par
+old   1: insert into match values('&matchid','&teamid','&playerid')\par
+new   1: insert into match values('M3','T3','P3')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for matchid: M4\par
+Enter value for teamid: T4\par
+Enter value for playerid: P4\par
+old   1: insert into match values('&matchid','&teamid','&playerid')\par
+new   1: insert into match values('M4','T4','P4')\par
+\par
+1 row created.\par
+\par
+SQL> SELECT * FROM MATCH;\par
+\par
+MATCHID    TEAMID               PLAYER\par
+---------- -------------------- ------\par
+M1         T1                   P1\par
+M2         T2                   P2\par
+M3         T3                   P3\par
+M4         T4                   P4\par
+\par
+SQL> create table ground(groundid varchar(10) PRIMARY KEY,matchid varchar(10),name varchar(30),location varchar(30));\par
+\par
+Table created.\par
+\par
+SQL> insert into ground values('&groundid','&matchid','&name','&location');\par
+Enter value for groundid: g1\par
+Enter value for matchid: m1\par
+Enter value for name: bhavya\par
+Enter value for location: chennai\par
+old   1: insert into ground values('&groundid','&matchid','&name','&location')\par
+new   1: insert into ground values('g1','m1','bhavya','chennai')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for groundid: g2\par
+Enter value for matchid: m2\par
+Enter value for name: madhu\par
+Enter value for location: vijayawada\par
+old   1: insert into ground values('&groundid','&matchid','&name','&location')\par
+new   1: insert into ground values('g2','m2','madhu','vijayawada')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for groundid: g3\par
+Enter value for matchid: m3\par
+Enter value for name: bunny\par
+Enter value for location: bangalore\par
+old   1: insert into ground values('&groundid','&matchid','&name','&location')\par
+new   1: insert into ground values('g3','m3','bunny','bangalore')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for groundid: g4\par
+Enter value for matchid: m4\par
+Enter value for name: satya\par
+Enter value for location: eluru\par
+old   1: insert into ground values('&groundid','&matchid','&name','&location')\par
+new   1: insert into ground values('g4','m4','satya','eluru')\par
+\par
+1 row created.\par
+\par
+SQL> select * from ground;\par
+\par
+GROUNDID   MATCHID    NAME\par
+---------- ---------- ------------------------------\par
+LOCATION\par
+------------------------------\par
+g1         m1         bhavya\par
+chennai\par
+\par
+g2         m2         madhu\par
+vijayawada\par
+\par
+g3         m3         bunny\par
+bangalore\par
+\par
+\par
+GROUNDID   MATCHID    NAME\par
+---------- ---------- ------------------------------\par
+LOCATION\par
+------------------------------\par
+g4         m4         satya\par
+eluru\par
+\par
+\par
+SQL> create table umpire(umpireid varchar(10) PRIMARY KEY,fname varchar(30),date of birth date,country varchar(30),email varchar(40),contactno number);\par
+create table umpire(umpireid varchar(10) PRIMARY KEY,fname varchar(30),date of birth date,country varchar(30),email varchar(40),contactno number)\par
+                                                                       *\par
+ERROR at line 1:\par
+ORA-00904: : invalid identifier\par
+\par
+\par
+SQL> create table umpire(umpireid varchar(10) PRIMARY KEY,fname varchar(30),country varchar(30),email varchar(40),contactno number);\par
+\par
+Table created.\par
+\par
+SQL> insert into umpire values('&umpireid','&fname','&country','&email','&contactno');\par
+Enter value for umpireid: u1\par
+Enter value for fname: madhu\par
+Enter value for country: india\par
+Enter value for email: madhu@gmail.com\par
+Enter value for contactno: 9163782532\par
+old   1: insert into umpire values('&umpireid','&fname','&country','&email','&contactno')\par
+new   1: insert into umpire values('u1','madhu','india','madhu@gmail.com','9163782532')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for umpireid: u2\par
+Enter value for fname: bhavya\par
+Enter value for country: india\par
+Enter value for email: bhavya@gmail.com\par
+Enter value for contactno: 916648253\par
+old   1: insert into umpire values('&umpireid','&fname','&country','&email','&contactno')\par
+new   1: insert into umpire values('u2','bhavya','india','bhavya@gmail.com','916648253')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for umpireid: u3\par
+Enter value for fname: gopi\par
+Enter value for country: pakisthan\par
+Enter value for email: gopi@gmail.com\par
+Enter value for contactno: 7013703422\par
+old   1: insert into umpire values('&umpireid','&fname','&country','&email','&contactno')\par
+new   1: insert into umpire values('u3','gopi','pakisthan','gopi@gmail.com','7013703422')\par
+\par
+1 row created.\par
+\par
+SQL> /\par
+Enter value for umpireid: u4\par
+Enter value for fname: sweety\par
+Enter value for country: india\par
+Enter value for email: sweety@gmail.com\par
+Enter value for contactno: 7093967934\par
+old   1: insert into umpire values('&umpireid','&fname','&country','&email','&contactno')\par
+new   1: insert into umpire values('u4','sweety','india','sweety@gmail.com','7093967934')\par
+\par
+1 row created.\par
+\par
+SQL> select*from umpire;\par
+\par
+UMPIREID   FNAME                          COUNTRY\par
+---------- ------------------------------ ------------------------------\par
+EMAIL                                     CONTACTNO\par
+---------------------------------------- ----------\par
+u1         madhu                          india\par
+madhu@gmail.com                          9163782532\par
+\par
+u2         bhavya                         india\par
+bhavya@gmail.com                          916648253\par
+\par
+u3         gopi                           pakisthan\par
+gopi@gmail.com                           7013703422\par
+\par
+\par
+UMPIREID   FNAME                          COUNTRY\par
+---------- ------------------------------ ------------------------------\par
+EMAIL                                     CONTACTNO\par
+---------------------------------------- ----------\par
+u4         sweety                         india\par
+sweety@gmail.com                         7093967934\par
+\par
+\par
+SQL> select location from ground where matchid='m4';\par
+\par
+LOCATION\par
+------------------------------\par
+eluru\par
+\par
+SQL> select * from player where fname like 'm%';\par
+\par
+no rows selected\par
+\par
+SQL> select * from player where fname like 'a%';\par
+\par
+PLAYE FNAME                       AGE\par
+----- -------------------- ----------\par
+p1    ajay                         23\par
+\par
+SQL> alter table player add batting varchar(20);\par
+\par
+Table altered.\par
+\par
+SQL> alter table player add bowling varchar(10);\par
+\par
+Table altered.\par
+\par
+SQL> select * from cricketboard where boardid in('bid101','bid102','bid103');\par
+\par
+BOARDID    NAME                           ADDRESS\par
+---------- ------------------------------ ------------------------------\par
+   CONTACT\par
+----------\par
+bid101     chennaic.b                     chennai\par
+9959153797\par
+\par
+bid102     andhrac.b                      andhra\par
+9490880438\par
+\par
+bid103     tamilnaduc.b                   tamilnadu\par
+8074183293\par
+\par
+\par
+SQL> select a.umpireid from umpire a where umpireid NOT IN (select umpireid from umpire_umpireid);\par
+select a.umpireid from umpire a where umpireid NOT IN (select umpireid from umpire_umpireid)\par
+                                                                            *\par
+ERROR at line 1:\par
+ORA-00942: table or view does not exist\par
+\par
+\par
+SQL> select umpireid from umpire  where umpireid not in(select umpireid from umpire_umpireid);\par
+select umpireid from umpire  where umpireid not in(select umpireid from umpire_umpireid)\par
+                                                                        *\par
+ERROR at line 1:\par
+ORA-00942: table or view does not exist\par
+\par
+\par
+SQL> select*from player;\par
+\par
+PLAYE FNAME                       AGE BATTING              BOWLING\par
+----- -------------------- ---------- -------------------- ----------\par
+p1    ajay                         23\par
+p2    ram                          25\par
+p4    satya                        25\par
+p3    tarun                        23\par
+\par
+SQL> insert into player values where batting=('rh','lh','rh','lh');\par
+insert into player values where batting=('rh','lh','rh','lh')\par
+                          *\par
+ERROR at line 1:\par
+ORA-00936: missing expression\par
+\par
+\par
+SQL> insert into player(batting ,bowling)values('righthand','lefthand');\par
+\par
+1 row created.\par
+\par
+SQL> insert into player(batting ,bowling)values('lefthand');\par
+insert into player(batting ,bowling)values('lefthand')\par
+                                    *\par
+ERROR at line 1:\par
+ORA-00947: not enough values\par
+\par
+\par
+SQL> /\par
+insert into player(batting ,bowling)values('lefthand')\par
+                                    *\par
+ERROR at line 1:\par
+ORA-00947: not enough values\par
+\par
+\par
+SQL> insert into player(batting ,bowling)values('lefthand','righthand');\par
+\par
+1 row created.\par
+\par
+SQL> select * from player;\par
+\par
+PLAYE FNAME                       AGE BATTING              BOWLING\par
+----- -------------------- ---------- -------------------- ----------\par
+p1    ajay                         23\par
+p2    ram                          25\par
+p4    satya                        25\par
+p3    tarun                        23\par
+                                      righthand            lefthand\par
+                                      lefthand             righthand\par
+\par
+6 rows selected.\par
+\par
+SQL> update player set batting='righthand' where playerid='p1';\par
+\par
+1 row updated.\par
+\par
+SQL> update player set batting='lefthand' where playerid='p2';\par
+\par
+1 row updated.\par
+\par
+SQL> update player set batting='lefthand' where playerid='p4';\par
+\par
+1 row updated.\par
+\par
+SQL> update player set bowling='lefthand' where playerid='p4';\par
+\par
+1 row updated.\par
+\par
+SQL> update player set bowling='lefthand' where playerid='p2';\par
+\par
+1 row updated.\par
+\par
+SQL> update player set bowling='righthand' where playerid='p1';\par
+\par
+1 row updated.\par
+\par
+SQL> update player set playerid='p5' batting='righthand';\par
+update player set playerid='p5' batting='righthand'\par
+                                *\par
+ERROR at line 1:\par
+ORA-00933: SQL command not properly ended\par
+\par
+\par
+SQL> select *from player;\par
+\par
+PLAYE FNAME                       AGE BATTING              BOWLING\par
+----- -------------------- ---------- -------------------- ----------\par
+p1    ajay                         23 righthand            righthand\par
+p2    ram                          25 lefthand             lefthand\par
+p4    satya                        25 lefthand             lefthand\par
+p3    tarun                        23\par
+                                      righthand            lefthand\par
+                                      lefthand             righthand\par
+\par
+6 rows selected.\par
+\par
+SQL> select count(*)from player where batting ='righthand';\par
+\par
+  COUNT(*)\par
+----------\par
+         2\par
+\par
+SQL> select playerid,fname from player where bowling='lefthand';\par
+\par
+PLAYE FNAME\par
+----- --------------------\par
+p2    ram\par
+p4    satya\par
+}
+ 
